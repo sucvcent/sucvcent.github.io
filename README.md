@@ -14,3 +14,12 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+#### 🔭 Reseach-wise, I mainly focus on:
+  - **Information Fusion**
+  - **Image Enhancement**
+  - 
+
+#### ✨News:[2024-06-24] 《[IFFusion]([]())》被《ICPR 2024》正式接收！[[论文下载]()] [[Code]()]
+
+#### ⚡Publications:
