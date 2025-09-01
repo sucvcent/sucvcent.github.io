@@ -3,150 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My GitHub.io Homepage</title>
+  <title>GitHub.io Earth Debug</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      text-align: center;
-      overflow-x: hidden;
-    }
-    header {
-      padding: 80px 20px 40px;
-      animation: fadeIn 2s ease-in-out;
-    }
-    header h1 {
-      font-size: 3em;
-      margin: 0 0 10px;
-      animation: slideDown 1.5s ease;
-    }
-    header p {
-      font-size: 1.2em;
-      opacity: 0.9;
-      animation: fadeIn 3s ease;
-    }
-    .buttons {
-      margin: 30px 0;
-      animation: fadeInUp 2s ease;
-    }
-    .buttons a {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 24px;
-      border-radius: 30px;
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-    .buttons a:hover {
-      background: rgba(255,255,255,0.4);
-      box-shadow: 0 0 15px rgba(255,255,255,0.8);
-      transform: translateY(-3px);
-    }
-    section {
-      padding: 50px 20px;
-      animation: fadeInUp 2s ease;
-    }
-    section h2 {
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 500px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-    }
-    footer {
-      padding: 20px;
-      font-size: 0.9em;
-      opacity: 0.8;
-    }
-
-    /* 3D 地球容器 */
+    body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+    h1 { text-align: center; padding: 20px; }
     #earth-container {
       width: 100%;
-      height: 500px;
-      margin-top: 30px;
-    }
-
-    /* 动画效果 */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes slideDown {
-      from { transform: translateY(-30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    @keyframes fadeInUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      height: 500px; /* ✅ 固定高度，保证可见 */
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Hi, I'm Your Name 👋</h1>
-    <p>Welcome to my GitHub.io personal homepage</p>
-    <div class="buttons">
-      <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-      <a href="https://twitter.com/" target="_blank">Twitter</a>
-      <a href="mailto:youremail@example.com">Email</a>
-    </div>
-  </header>
+  <h1>3D Earth Debug Page</h1>
+  <div id="earth-container"></div>
 
-  <section>
-    <h2>About Me</h2>
-    <div class="card">
-      <p>Hello! I'm a developer passionate about coding, open-source, and building cool projects.</p>
-    </div>
-  </section>
-
-  <!-- 🌍 3D 地球仪 -->
-  <section>
-    <h2>My World</h2>
-    <div id="earth-container"></div>
-  </section>
-
-  <section>
-    <h2>Projects</h2>
-    <div class="card">
-      <p>Check out my latest projects on GitHub. More coming soon!</p>
-    </div>
-  </section>
-
-  <footer>
-    © 2025 Your Name | Built with ❤ on GitHub Pages
-  </footer>
-
-  <!-- Three.js & Earth Script -->
   <script type="module">
     import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.156.1/build/three.module.js";
     import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.156.1/examples/jsm/controls/OrbitControls.js";
 
     const container = document.getElementById("earth-container");
-
-    // 场景
     const scene = new THREE.Scene();
 
-    // 相机
     const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.set(0, 0, 3);
 
-    // 渲染器
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
@@ -156,18 +37,19 @@
     light.position.set(5, 3, 5);
     scene.add(light);
 
-    const textureLoader = new THREE.TextureLoader();
+    const loader = new THREE.TextureLoader();
 
-    // 地球贴图
-    const earthDayMap = textureLoader.load("https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg");
-    const earthNightMap = textureLoader.load("https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57730/earth_lights_lrg.jpg");
-
+    // 白天贴图
+    const earthDay = loader.load("https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg");
+    // 夜晚城市灯光
+    const earthNight = loader.load("https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57730/earth_lights_lrg.jpg");
     const earthMaterial = new THREE.MeshPhongMaterial({
-      map: earthDayMap,
-      emissiveMap: earthNightMap,
+      map: earthDay,
+      emissiveMap: earthNight,
       emissive: new THREE.Color(0xffffff),
       emissiveIntensity: 1.0
     });
+
     const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
     const earth = new THREE.Mesh(earthGeometry, earthMaterial);
     scene.add(earth);
@@ -184,7 +66,7 @@
     scene.add(atmosphere);
 
     // 星空背景
-    const starTexture = textureLoader.load("https://threejs.org/examples/textures/galaxy_starfield.png");
+    const starTexture = loader.load("https://threejs.org/examples/textures/galaxy_starfield.png");
     const starGeometry = new THREE.SphereGeometry(50, 64, 64);
     const starMaterial = new THREE.MeshBasicMaterial({ map: starTexture, side: THREE.BackSide });
     const stars = new THREE.Mesh(starGeometry, starMaterial);
@@ -194,7 +76,6 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // 动画
     function animate() {
       requestAnimationFrame(animate);
       earth.rotation.y += 0.002;
@@ -203,7 +84,6 @@
     }
     animate();
 
-    // 自适应窗口
     window.addEventListener("resize", () => {
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
